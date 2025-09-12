@@ -477,6 +477,8 @@ const listings = [
  * from the array above
  */
 //WRITE YOUR CODE BELOW
+const listing0 = listings[0];
+
 
 /**
  * Task-2: create an object named listing1 using the spread operator and add 2 new properties,
@@ -484,6 +486,9 @@ const listings = [
  * and currentOwner which is a string with the value of Jane Doe
  */
 //WRITE YOUR CODE BELOW
+const listing1 = { ...listings[1] }; 
+listing1.isSold = false;            
+listing1.currentOwner = "Jane Doe";
 
 /**
  * Task-3: print to console a text using template literals that contains the name of the owner,
@@ -492,6 +497,7 @@ const listings = [
  * "This house at (address) is owned by (currentOwner)"
  */
 //WRITE YOUR CODE BELOW
+console.log(`This house at ${listing1.address} is owned by ${listing1.currentOwner}`);
 
 /**
  * NOTE: THIS TASK IS TRICKY!
@@ -507,14 +513,47 @@ const listings = [
  * USE TERNARIES INSTEAD OF IF/ELSE STATEMENTS!
  */
 //WRITE YOUR CODE BELOW
+function realtorFees(listing) {
+  //// .replace(/[$,]/g, "") removes all $ and , characters from the string
+  // Number() converts the cleaned string into an actual numeric value
+  const price = Number(listing.price.replace(/[$,]/g, ""));
+  const fee = price <= 450000 
+    ? price * 0.025 : price * 0.02;
+  return fee;
+}
+
+console.log(realtorFees(listings[2])); // 16598
+console.log(realtorFees(listings[6])); // 10998
+
 
 /**
  * Task-5: Sort the listing array ascendingly in a new variable called listingAscendingly
  */
 //WRITE YOUR CODE BELOW
+//sort the listings by price from cheap to expensive
+// .replace(/[$,]/g, "") removes all $ and , characters from the string
+// Number() converts the cleaned string into an actual numeric value
+const listingAscendingly = [...listings].sort(
+  (a, b) =>
+    Number(a.price.replace(/[$,]/g, "")) -
+    Number(b.price.replace(/[$,]/g, ""))
+);
+
+
+console.log(listingAscendingly);
 
 /**
  * Task-6: filter all the listings by bulitIn propertity for all houses built on or after 1990.
  * Name the variable newBuiltListings
  */
 //WRITE YOUR CODE BELOW
+// Number() converts the cleaned string into an actual numeric value
+// \D  → matches any character that is not a digit (0–9)
+// g   → global flag, meaning replace all matches, not just the first one
+// replace(/\D/g, "") → removes everything that isn’t a number, leaving only digits
+// If the builtIn year is "Unknown", it will be converted to 0 using || 0
+const newBuiltListings = listings.filter(
+  (listing) => (Number(listing.propertySummary.builtIn.replace(/\D/g, "")) || 0) >= 1990
+);
+
+console.log(newBuiltListings);
