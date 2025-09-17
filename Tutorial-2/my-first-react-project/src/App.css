@@ -58,3 +58,24 @@
   justify-content: space-around;
   aligin-items: center;
 }
+
+.Card-Sale {
+  color:red
+}
+
+.Card-Sale-Glow{
+  box-shadow: 0 0 10px 5px #fcfcfcaa;
+}
+
+@media screen and (max-width: 600px) {
+  .main-container {
+    flex-direction: column;
+    width: 300px;
+    text-align: center;
+  }
+  .Card-Component {
+    width: 90%;
+    margin: 20px;
+
+  }
+}
