@@ -1,0 +1,43 @@
+
+
+h1, h2, h3 {
+  font-weight: bold;
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Container for all boxes */
+.ColorBoxesContainer {
+    width: 250px;
+    height: 250px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* allows boxes to wrap into multiple rows */
+}
+
+/* Individual color boxes */
+.ColorBox {
+    background-color: #ff0; /* yellow, not #ffO */
+    color: black;
+    text-align: center;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+}
+
+/* Responsive adjustment */
+@media screen and (max-width: 580px) {
+    .ColorBox {
+        font-size: 0.5em;
+    }
+    .ColorBoxesContainer {
+        flex-direction: column; /* stack boxes vertically on small screens */
+        height: auto; /* allow container to grow */
+    }
+}
