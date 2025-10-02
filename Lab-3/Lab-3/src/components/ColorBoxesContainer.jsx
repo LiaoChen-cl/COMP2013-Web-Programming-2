@@ -1,12 +1,14 @@
 import ColorBox from "./ColorBox";
 import "../App.css";
-import colors from "../data/data";
 
-export default function ColorBoxesContainer() {
+
+// "ColorBoxesContainer" that will take a colors array as a prop. 
+// This component should populate all 25 colour boxes
+export default function ColorBoxesContainer({ colors }) {
   return (
     <div className="ColorBoxesContainer">
-      {colors.map((color, index) => (
-        <ColorBox key={index} colors={colors} />
+      {colors.map((color,index) => (
+        <ColorBox key={index} />
       ))}
 
 

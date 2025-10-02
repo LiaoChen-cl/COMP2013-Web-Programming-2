@@ -1,6 +1,6 @@
 import ColorBoxesContainer from "./components/ColorBoxesContainer";
 import { useState } from "react";
-import data from "./data/data";
+import colors from "./data/data"; 
 import "./App.css";
 
 // Function to generate a random number between 0 and numItems - 1
@@ -8,7 +8,7 @@ function getRandomNumber(numItems) {
   return Math.floor(Math.random() * numItems);
 }
 
-
+// import the "colors" list, defined as an array of hexadecimal strings representing colours, from "data.js.
 function App() {
   const numItems = 25; // Total number of colors in the data array
   // Declare a state variable 'randomNumber' to store the current random index
@@ -22,14 +22,14 @@ function App() {
       <div
         className="RandomNumber"
         onClick={() => setRandomNumber(getRandomNumber(numItems))}
-        style={{ backgroundColor: data[Math.floor(randomNumber)] }}
+        style={{ backgroundColor: colors[Math.floor(randomNumber)] }}
       />
 
       {/* 
         Container component that renders 25 ColorBox components 
         Each ColorBox is clickable and changes its color randomly
       */}
-      <ColorBoxesContainer />
+      <ColorBoxesContainer colors={colors} />
     </div>
   );
 }
