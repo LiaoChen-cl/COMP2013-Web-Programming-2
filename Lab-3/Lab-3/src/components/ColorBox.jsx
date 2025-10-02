@@ -1,8 +1,7 @@
 import { useState } from "react";
-import colors from "../data/data";
 
-export default function ColorBox() {
-  // 每个 box 自己随机选择初始颜色
+
+export default function ColorBox({ colors }) {
   const [color, setColor] = useState(
     colors[Math.floor(Math.random() * colors.length)]
   );
