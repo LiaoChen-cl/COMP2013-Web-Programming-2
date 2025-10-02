@@ -1,17 +1,19 @@
 import { useState } from "react";
 import colors from "../data/data";
 
-export default function ColorBox({ colorProp }) {
-  const [color, setColor] = useState(colorProp);
+export default function ColorBox() {
+  // 每个 box 自己随机选择初始颜色
+  const [color, setColor] = useState(
+    colors[Math.floor(Math.random() * colors.length)]
+  );
 
   return (
     <div
       className="ColorBox"
       style={{ backgroundColor: color }}
-      onClick={() => {
-        const randomIndex = Math.floor(Math.random() * colors.length);
-        setColor(colors[randomIndex]);
-      }}
+      onClick={() =>
+        setColor(colors[Math.floor(Math.random() * colors.length)])
+      }
     />
   );
 }
