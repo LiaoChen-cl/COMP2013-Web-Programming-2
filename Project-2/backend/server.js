@@ -43,37 +43,65 @@ server.get("/products", async (request, response) => {
 });
 
 // Add a new product
-server.post("/add-product", async (request, response) => {
-  const { id, productName, brand, quantity, image, price } = request.body;
-  const newProduct = new Product({ id, productName, brand, quantity, image, price });
+server.post("/add-product", async (req, res) => {
   try {
-    await newProduct.save();
-    response.status(201).json({ message: "Product added successfully" });
+    const { productName, brand, image, price } = req.body;
+
+    if (!productName || !brand || !image || !price) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // 生成前端列表用的伪造 ID（可以从 MongoDB _id 生成或者随机）
+    const fakeId = Math.random().toString(36).substr(2, 9);
+
+    const newProduct = new Product({ productName, brand, image, price, fakeId });
+    const savedProduct = await newProduct.save();
+
+    res.status(201).json({
+      message: `${savedProduct.productName} added with MongoDB _id: ${savedProduct._id}`,
+      product: savedProduct
+    });
   } catch (error) {
-    response.status(400).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 });
+
+
+
+
+
 
 // Delete a product
 server.delete("/products/:id", async (request, response) => {
   const { id } = request.params;
-  const objectId = new mongoose.Types.ObjectId(id); // 如果 id 是 MongoDB ObjectId
   try {
-    await Product.findByIdAndDelete(objectId);
+    await Product.findOneAndDelete({ _id: id }); // ✅ 改为按 MongoDB ObjectId 删除
     response.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     response.status(404).json({ message: error.message });
   }
 });
 
+
 // Update a product
 server.patch("/products/:id", async (request, response) => {
   const { id } = request.params;
-  const { productName, brand, quantity, image, price } = request.body;
-  const objectId = new mongoose.Types.ObjectId(id); // 如果 id 是 ObjectId
+  let { productName, brand, quantity, image, price } = request.body;
+
+  if (typeof price === "string") {
+    price = parseFloat(price.replace("$", ""));
+  }
+
   try {
-    await Product.findByIdAndUpdate(objectId, { productName, brand, quantity, image, price });
-    response.status(200).json({ message: `Product updated successfully with id ${id}` });
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { productName, brand, quantity, image, price },
+      { new: true }
+    );
+    response.status(200).json({
+      message: `Product updated successfully with id ${id}`,
+      product: updatedProduct
+    });
   } catch (error) {
     response.status(500).json({ message: error.message });
   }

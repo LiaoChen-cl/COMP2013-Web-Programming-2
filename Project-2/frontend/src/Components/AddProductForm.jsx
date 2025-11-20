@@ -1,60 +1,63 @@
-// ***新增文件***
 import { useState } from "react";
-import axios from "axios";
 
-export default function AddProductForm({ onProductAdded }) {
+export default function AddProductForm({ handleAddProduct }) {
   const [formData, setFormData] = useState({
     id: "",
     productName: "",
     brand: "",
-    quantity: "",
     image: "",
     price: ""
   });
 
-  const [responseMessage, setResponseMessage] = useState("");
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }
 
-  // ***新增部分***
-  const handleOnChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
-  const handleOnSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
+   if (!formData.productName || !formData.brand || !formData.price || !formData.image) {
+    alert("Please fill all required fields!");
+    return;
+  }
+
+
     try {
-      const response = await axios.post("http://localhost:3000/add-product", {
-        id: parseInt(formData.id),
-        productName: formData.productName,
-        brand: formData.brand,
-        quantity: parseInt(formData.quantity),
-        image: formData.image,
-        price: parseFloat(formData.price)
+      const res = await fetch("http://localhost:3000/add-product", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
       });
-      setResponseMessage(response.data.message);
-      setFormData({ id: "", productName: "", brand: "", quantity: "", image: "", price: "" });
-      if (onProductAdded) onProductAdded(); // Notify parent to refresh product list
-    } catch (error) {
-      console.error(error);
-      setResponseMessage(error.response?.data?.message || "Error adding product");
+
+      if (!res.ok) throw new Error("Failed to add product");
+
+      const data = await res.json();
+
+      // 生成前端 localId
+      const localId = Math.random().toString(36).substr(2, 9);
+
+      // 更新父组件 productList 和 productQuantity
+      handleAddProduct({ ...data.product, localId });
+
+
+      // 提醒用户 MongoDB 自动生成的 _id
+      alert(`${data.product.productName} added with MongoDB _id: ${data.product._id}`);
+
+
+      setFormData({ id: "", productName: "", brand: "", image: "", price: "" });
+    } catch (err) {
+      console.error(err);
+      alert("Error adding product. See console for details.");
     }
-  };
+  }
 
   return (
-    <div className="AddProductForm">
-      <h3>Add New Product</h3>
-      <form onSubmit={handleOnSubmit}>
-        <input name="id" placeholder="ID" value={formData.id} onChange={handleOnChange} />
-        <input name="productName" placeholder="Product Name" value={formData.productName} onChange={handleOnChange} />
-        <input name="brand" placeholder="Brand" value={formData.brand} onChange={handleOnChange} />
-        <input name="quantity" placeholder="Quantity" value={formData.quantity} onChange={handleOnChange} />
-        <input name="image" placeholder="Image URL" value={formData.image} onChange={handleOnChange} />
-        <input name="price" placeholder="Price" value={formData.price} onChange={handleOnChange} />
-        <button type="submit">Add Product</button>
-      </form>
-      <p>{responseMessage}</p>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="productName" placeholder="Product Name" value={formData.productName} onChange={handleChange} required />
+      <input type="text" name="brand" placeholder="Brand" value={formData.brand} onChange={handleChange} required />
+      <input type="text" name="image" placeholder="Image URL" value={formData.image} onChange={handleChange} required />
+      <input type="text" name="price" placeholder="Price (e.g. 3.65 or $3.65)" value={formData.price} onChange={handleChange} required />
+      <button type="submit">Add Product</button>
+    </form>
   );
 }

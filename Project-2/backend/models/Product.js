@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 // Define the Product schema
 const productSchema = new Schema({
-  id: {
-    type: Number,
+  fakeId: {
+    type: String,
     required: true,
     unique: true
   },
@@ -15,11 +15,6 @@ const productSchema = new Schema({
   brand: {
     type: String,
     required: true
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    min: 0 // Products cannot be less than 0
   },
   image: {
     type: String,
