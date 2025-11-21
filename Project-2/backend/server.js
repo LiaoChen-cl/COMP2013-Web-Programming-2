@@ -42,27 +42,26 @@ server.get("/products", async (request, response) => {
   }
 });
 
-// Add a new product
-server.post("/add-product", async (req, res) => {
+server.post("/products", async (req, res) => {
   try {
     const { productName, brand, image, price } = req.body;
 
-    if (!productName || !brand || !image || !price) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
+    // 生成随机 id（例如 13 位数字）
+    const randomId = Math.floor(1000000000000 + Math.random() * 9000000000000).toString();
 
-    // 生成前端列表用的伪造 ID（可以从 MongoDB _id 生成或者随机）
-    const fakeId = Math.random().toString(36).substr(2, 9);
-
-    const newProduct = new Product({ productName, brand, image, price, fakeId });
-    const savedProduct = await newProduct.save();
-
-    res.status(201).json({
-      message: `${savedProduct.productName} added with MongoDB _id: ${savedProduct._id}`,
-      product: savedProduct
+    const newProduct = new Product({
+      id: randomId,
+      productName,
+      brand,
+      image: image || "",
+      price: price.startsWith("$") ? price : "$" + price
     });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+
+    const savedProduct = await newProduct.save();
+    res.status(201).json({ product: savedProduct });
+  } catch (err) {
+    console.error("Error saving product:", err);
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -71,16 +70,21 @@ server.post("/add-product", async (req, res) => {
 
 
 
-// Delete a product
-server.delete("/products/:id", async (request, response) => {
-  const { id } = request.params;
+
+
+
+
+
+server.delete("/products/:id", async (req, res) => {
   try {
-    await Product.findOneAndDelete({ _id: id }); // ✅ 改为按 MongoDB ObjectId 删除
-    response.status(200).json({ message: "Product deleted successfully" });
-  } catch (error) {
-    response.status(404).json({ message: error.message });
+    const deleted = await Product.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: "Not found" });
+    res.json({ message: "Deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
+
 
 
 // Update a product

@@ -3,26 +3,22 @@ import ProductCard from "./ProductCard";
 export default function ProductsContainer({
   data,
   productQuantity,
-  handleOnChangePrice,
   handleAddToQuantity,
   handleRemoveQuantity,
   handleAddToCart,
-  handleDelete,
-  handleEdit
+  handleDeleteProduct
 }) {
   return (
     <div className="ProductsContainer">
       {data.map(product => (
         <ProductCard
-          key={product.id}
+          key={product._id}
           {...product}
-          productQuantity={productQuantity.find(p => p.id === product.id)}
-          handleOnChangePrice={handleOnChangePrice}
+          productQuantity={productQuantity.find(p => p.id === product._id)}
           handleAddToQuantity={handleAddToQuantity}
           handleRemoveQuantity={handleRemoveQuantity}
           handleAddToCart={handleAddToCart}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
+          handleDeleteProduct={handleDeleteProduct}
         />
       ))}
     </div>
