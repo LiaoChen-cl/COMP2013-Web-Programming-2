@@ -1,4 +1,3 @@
-// ...existing code...
 export default function QuantityCounter({ quantity, onAdd, onRemove, min = 0 }) {
   // QuantityCounter, simple +/- control with current quantity display
  
