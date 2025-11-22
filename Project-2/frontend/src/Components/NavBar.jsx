@@ -1,13 +1,10 @@
-// ...existing code...
 import { useState } from "react";
 import cartEmpty from "../assets/cart-empty.png";
 import cartFull from "../assets/cart-full.png";
 import React from "react";
 
-// NavBar: top navigation showing greeting, app title and cart status.
-// Props:
-// - cartCount: number of distinct items in the cart (used to choose icon and badge visibility)
-// - username: string shown in the greeting
+// NavBar is top navigation 
+// showing greeting, app title and cart status.
 export default function NavBar({ cartCount, username }) {
   return (
     <div className="NavBar">

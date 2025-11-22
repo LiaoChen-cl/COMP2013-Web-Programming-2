@@ -1,4 +1,3 @@
-// ...existing code...
 import "./App.css";
 import NavBar from "./Components/NavBar";
 import GroceriesAppContainer from "./Components/GroceriesAppContainer";

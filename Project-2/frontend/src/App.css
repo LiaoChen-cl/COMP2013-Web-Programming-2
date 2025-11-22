@@ -40,17 +40,13 @@
   padding: 0 10px;
 }
 
-/* High-level app container (flex layout for main content) */
-.GroceriesApp-Container {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  max-width: 800px; 
-  border: 1px solid white;
-  /* max-width: 800px; */
-  /* border: 1px solid white; */
 
+.GroceriesAppContainer {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
 }
+
 
 
 /* MainContent: left (products) and right (cart) columns */
@@ -66,17 +62,10 @@
   flex: 0 0 25%; 
   border: none;
   padding: 10px;
+  width: 260px;
 }
 
-/* Products column: use remaining space, wrap cards */
-.ProductsContainer {
-  flex: 1; 
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  padding: 5px;
-  border: none;
-}
+
 
 /* Individual cart card styling (row layout) */
 .CartCard {
@@ -87,7 +76,7 @@
   border-radius: 8px;
   margin-bottom: 10px;
   background-color: rgb(43, 48, 54);
-  height: 150px;
+  height: 200px;
   min-height: 150px;        /* keep consistent height */
   flex-shrink: 0; 
   gap: 20px;                   /* spacing between columns */
@@ -96,7 +85,7 @@
 
 /* Left side of CartCard: image, name, quantity controls stacked vertically */
 .left-side {
-  width: 150px;  /* fixed width */
+  width: 200px;  /* fixed width */
   display: flex;
   flex-direction: column;    
   align-items: center;       
@@ -130,19 +119,12 @@
   cursor: pointer;
 }
 
-/* CartCardInfo: helper container for inline info (unused/optional) */
-.CartCardInfo {
-  display: flex;
-  justify-content: space-around;
-  /* display: flex;
-  justify-content: space-around; */
-  width: 50%;
-}
+
 
 /* Products container alternate rules for layout and sizing */
 .ProductsContainer {
-  width: 75%;
-  max-width: 800px;
+  width: 700px;
+  max-width: 700px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -280,6 +262,12 @@ img {
   font-size: 16px;
   font-weight: bold;
   transition: background-color 0.3s;
+}
+
+.AddProductForm {
+  width: 250px;
+  flex-shrink: 0;
+  width: 260px;
 }
 
 

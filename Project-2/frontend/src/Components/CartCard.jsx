@@ -1,22 +1,13 @@
-// ...existing code...
 import QuantityCounter from "./QuantityCounter";
 
-// CartCard: displays a single item in the shopping cart.
-// Props:
-// - productName: string, name of the product
-// - image: string, URL of the product image
-// - quantity: number, current quantity in cart
-// - currentPrice: number, unit price
-// - id: unique identifier for the cart item
-// - handleRemoveFromCart: function(id) -> removes the item from cart
-// - handleAddToQuantity: function(id) -> increments quantity
-// - handleRemoveQuantity: function(id) -> decrements quantity
+// CartCard displays a single card in the shopping cart.
+
 export default function CartCard({
   productName,
   image,
   quantity,
   currentPrice,
-  id,
+  _id, // mongodb one
   handleRemoveFromCart,
   handleAddToQuantity,
   handleRemoveQuantity,
@@ -38,8 +29,8 @@ export default function CartCard({
         <QuantityCounter
           quantity={quantity}
         // Callbacks to update quantity for this item
-          onAdd={() => handleAddToQuantity(id)}
-          onRemove={() => handleRemoveQuantity(id)}
+          onAdd={() => handleAddToQuantity(_id)}
+          onRemove={() => handleRemoveQuantity(_id)}
           min={1} // Minimum allowed quantity is 1
         />
         
@@ -50,7 +41,7 @@ export default function CartCard({
         {/* Total = quantity * unit price, formatted to two decimals */}
         <p>Total: ${(quantity * currentPrice).toFixed(2)}</p>
          {/* Remove button removes the entire item from the cart */}
-        <button className="remove-btn" onClick={() => handleRemoveFromCart(id)}>Remove</button>
+        <button className="remove-btn" onClick={() => handleRemoveFromCart(_id)}>Remove</button>
       </div>
     </div>
   );
